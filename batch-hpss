@@ -1,0 +1,6 @@
+#!/bin/sh
+
+mkdir -p hpss-output ;
+mkdir -p hpss-output/percussive ;
+mkdir -p hpss-output/harmonic &&
+	fd -e wav -d 1 -x fluid-hpss -source {} -harmonic hpss-output/harmonic/{/.}-h.wav -percussive hpss-output/percussive/{/.}-p.wav

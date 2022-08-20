@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mkdir -p sines && fd -e wav -d 1 -x fluid-sines -source {} -sines sines/{/.}.wav

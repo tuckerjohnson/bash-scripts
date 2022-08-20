@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mkdir -p tslices && fd -e wav -d 1 -x fluid-transientslice -source {} -indices tslices/{/.}-ts.csv
