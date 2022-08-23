@@ -17,6 +17,12 @@ projects. It allows me to quickly preview manuscript files
 to check notes and other details. It skips having to compile
 the complete document so that the preview processes faster.
 #### tslicer
+```
+tslicer [wav file] [transient slice indeices]
+```
 easy to use wrapper for fluid-transientslice
 #### ffsample-get
-uses ffprobe to approximate number of frames in a file. usually over-shoots estimate.
+```
+ffsample-get [wav file]
+```
+uses ffprobe to approximate number of frames in a file. usually over-shoots estimate. dependencies: `ffmpeg`

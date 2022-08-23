@@ -1,19 +1,11 @@
 #!/bin/sh
 
 # returns an aproximation of samples in a given wav file using ffprobe.
-# will write append output to a tsclices
 
-file=$(readlink -f "$1")
-base="${file%.*}"
-name=$(basename "$base")
-
-ffprobe -i "$file" 2>&1 | awk '/Input/ {p=1;next}p' | sed 's/  Duration: //g; s/, bitrate:.*//g; s/.*), //g; s/ Hz.*//g;' > "$name"-ffs.tmp;
-
-dur=$(sed '2d;' "$name"-ffs.tmp | awk -F: '{ print ($1 * 3600) + ($2 * 60) + $3 }')
-sam=$(sed '1d;' "$name"-ffs.tmp)
+trim=$(ffprobe -i "$1" 2>&1 | awk '/Input/ {p=1;next}p' | sed 's/  Duration: //g; s/, bitrate:.*//g; s/.*), //g; s/ Hz.*//g;')
+dur=$(echo "$trim" | sed '2d;' | awk -F: '{ print ($1 * 3600) + ($2 * 60) + $3 }')
+sam=$(echo "$trim" | sed '1d;')
 frames=$(echo $sam \* $dur | bc | sed 's/\.00//g; s/\.0//g;')
 frames=$(($frames-500))
 
 echo "$frames"
-
-rm -f "$name"-ffs.tmp
