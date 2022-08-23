@@ -18,7 +18,7 @@ to check notes and other details. It skips having to compile
 the complete document so that the preview processes faster.
 #### tslicer
 ```
-tslicer [wav file] [transient slice indeices]
+tslicer [wav file]
 ```
 easy to use wrapper for fluid-transientslice
 #### ffsample-get
