@@ -1,12 +1,9 @@
 #!/bin/sh
 
 file=$(readlink -f "$1")
-dir=${PWD##*/}
-proj="$(basename "$(dirname "${PWD}")")"
-base="${file%.*}"
-ext="${file##*.}"
 
-case "$dir" in
-	manuscripts) cat ../variables/*.ly ../eng-files/paper.ly "$file" > "$base".ly-tmp && lilypond "$base".ly-tmp ; rm -f "$base".ly-tmp ;;
+case "${PWD##*/}" in
+	manuscripts) cat ../variables/*.ly ../eng-files/paper.ly "$file" |
+		lilypond --output="$(basename "$(dirname "${PWD}")")-$(basename "$file" | sed 's/.ly//' )" -  ;;
 	*) echo "not a manuscript file" ;
 esac

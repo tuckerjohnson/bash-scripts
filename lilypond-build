@@ -1,15 +1,14 @@
 #!/bin/sh
 
-file=$(readlink -f "$1")
-dir=${PWD##*/}
-proj="$(basename "$(dirname "${PWD}")")"
-base="${file%.*}"
-ext="${file##*.}"
-
-case "$dir" in
-	variables) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly > ../"$proj".ly-tmp && lilypond --output=../ ../"$proj".ly-tmp ; rm -f ../"$proj".ly-tmp ;;
-	eng-files) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly > ../"$proj".ly-tmp && lilypond --output=../ ../"$proj".ly-tmp ; rm -f ../"$proj".ly-tmp ;;
-	front-matter) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly > ../"$proj".ly-tmp && lilypond --output=../ ../"$proj".ly-tmp ; rm -f ../"$proj".ly-tmp ;;
-	manuscripts) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly > ../"$proj".ly-tmp && lilypond --output=../ ../"$proj".ly-tmp ; rm -f ../"$proj".ly-tmp ;;
-	*) cat variables/*.ly eng-files/*.ly front-matter/*.ly *.ly > "$dir".ly-tmp && lilypond "$dir".ly-tmp ; rm -f "$dir".ly-tmp ;
+case "${PWD##*/}" in
+	variables) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
+		lilypond --output=../"$(basename "$(dirname "${PWD}")")" - ;;
+	eng-files) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
+		lilypond --output=../"$(basename "$(dirname "${PWD}")")" - ;;
+	front-matter) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
+		lilypond --output=../"$(basename "$(dirname "${PWD}")")" - ;;
+	manuscripts) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
+		lilypond --output=../"$(basename "$(dirname "${PWD}")")" -  ;;
+	*) cat variables/*.ly eng-files/*.ly front-matter/*.ly *.ly |
+		lilypond --output="$(basename "$(dirname "${PWD}")")" - ;
 esac
