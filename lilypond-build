@@ -10,5 +10,5 @@ case "${PWD##*/}" in
 	manuscripts) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
 		lilypond --output=../"$(basename "$(dirname "${PWD}")")" -  ;;
 	*) cat variables/*.ly eng-files/*.ly front-matter/*.ly *.ly |
-		lilypond --output="$(basename "$(dirname "${PWD}")")" - ;
+		lilypond --output="${PWD##*/}" - ;
 esac
