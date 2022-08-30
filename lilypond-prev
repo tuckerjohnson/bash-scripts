@@ -4,6 +4,6 @@ file=$(readlink -f "$1")
 
 case "${PWD##*/}" in
 	manuscripts) cat ../variables/*.ly ../eng-files/paper.ly "$file" |
-		lilypond --output="$(basename "$(dirname "${PWD}")")-$(basename "$file" | sed 's/.ly//' )" -  ;;
+		lilypond --output="$(basename "$file" | sed 's/.ly//' )" -  ;;
 	*) echo "not a manuscript file" ;
 esac
