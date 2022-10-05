@@ -1,0 +1,13 @@
+#!/bin/sh
+
+files=(*)
+secret=$(printf "%s\n" "${files[RANDOM % ${#files[@]}]}")
+pos=$(shuf -i 0-75 -n 1)
+mpv --vid=no --start="$pos%" --length=30 --no-terminal "$secret" 2>&1 > /dev/null
+
+dec=$(ls | sed 's/.\///; s/.mp3//' | nl -w2 -s'> ' - )
+echo "$dec"
+read -r -p "Which file? (1, 2, 3, etc)  " choice
+play=$( echo "$dec" | sed ""$choice"!d" | sed "s/ "$choice"> //;")
+echo "you picked $play"
+echo "correct was $secret"
