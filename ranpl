@@ -9,4 +9,4 @@ echo "$dec"
 read -r -p "Which file? (1, 2, 3, etc)  " choice
 play=$( echo "$dec" | sed ""$choice"!d" | sed "s/ "$choice"> //;")
 echo "you picked $play"
-echo "correct was $secret"
+echo "correct was $secret -- $pos"

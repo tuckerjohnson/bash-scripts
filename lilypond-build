@@ -2,13 +2,13 @@
 
 case "${PWD##*/}" in
 	variables) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
-		lilypond --output=../"$(basename "$(dirname "${PWD}")")" - ;;
+		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" - ;;
 	eng-files) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
-		lilypond --output=../"$(basename "$(dirname "${PWD}")")" - ;;
+		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" - ;;
 	front-matter) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
-		lilypond --output=../"$(basename "$(dirname "${PWD}")")" - ;;
+		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" - ;;
 	manuscripts) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
-		lilypond --output=../"$(basename "$(dirname "${PWD}")")" -  ;;
+		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" -  ;;
 	*) cat variables/*.ly eng-files/*.ly front-matter/*.ly *.ly |
-		lilypond --output="${PWD##*/}" - ;
+		lilypond -dno-point-and-click --output="${PWD##*/}" - ;
 esac
