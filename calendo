@@ -1,0 +1,7 @@
+#!/bin/sh
+
+git --git-dir="$HOME/.calendar/.git/" --work-tree="$HOME/.calendar/" pull ;
+calcurse ;
+git --git-dir="$HOME/.calendar/.git/" --work-tree="$HOME/.calendar/" add -A &&
+	git --git-dir="$HOME/.calendar/.git/" --work-tree="$HOME/.calendar/" commit -m "script commit" &&
+	git --git-dir="$HOME/.calendar/.git/" --work-tree="$HOME/.calendar/" push

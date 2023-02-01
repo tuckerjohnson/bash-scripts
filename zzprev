@@ -1,6 +1,0 @@
-#!/bin/sh
-
-file=$(readlink -f "$1")
-base="${file%.*}"
-
-zathura "$base".pdf
