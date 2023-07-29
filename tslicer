@@ -1,3 +1,0 @@
-#!/bin/sh
-
-fluid-transientslice -source $1 -indices $2

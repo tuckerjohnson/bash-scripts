@@ -1,3 +1,0 @@
-#!/bin/sh
-
-termdown -s $1 ; mpv ~/Lib/raw-sflib/sflib/gamelan/gangsa.2.wav

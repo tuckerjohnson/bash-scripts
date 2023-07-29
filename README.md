@@ -1,6 +1,8 @@
+
 These are shell scripts I use regularly.
 They are very basic and inelegant or borrow heavily
 on scripts written by others
+
 #### compiler
 this is a clone of Luke Smith's compiler script included
 in larbs.xyz. I use it in vim to compile lots of things.
@@ -16,11 +18,6 @@ like lilypond-build this script is used for my lilypond
 projects. It allows me to quickly preview manuscript files
 to check notes and other details. It skips having to compile
 the complete document so that the preview processes faster.
-#### tslicer
-```
-tslicer [wav file]
-```
-easy to use wrapper for fluid-transientslice
 #### ffsample-get
 ```
 ffsample-get [wav file]
