@@ -1,7 +1,0 @@
-#!/bin/sh
-
-git --git-dir="$HOME/Notes/.git/" --work-tree="$HOME/Notes/" pull ;
-nvim -c VimwikiIndex ;
-git --git-dir="$HOME/Notes/.git/" --work-tree="$HOME/Notes/" add -A &&
-	git --git-dir="$HOME/Notes/.git/" --work-tree="$HOME/Notes/" commit -m "script commit" &&
-	git --git-dir="$HOME/Notes/.git/" --work-tree="$HOME/Notes/" push
