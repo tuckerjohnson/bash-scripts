@@ -7,16 +7,6 @@ ext="${file##*.}"
 
 cd "$dir" || exit 1
 
-textype() { \
-	command="pdflatex"
-	( head -n5 "$file" | grep -qi 'xelatex' ) && command="xelatex"
-	$command --output-directory="$dir" "$base" &&
-	grep -qi addbibresource "$file" &&
-	biber --input-directory "$dir" "$base" &&
-	$command --output-directory="$dir" "$base" &&
-	$command --output-directory="$dir" "$base"
-}
-
 lilyrun() { \
 	command="lilypond"
 	( head -n5 "$file" | grep -qi 'project' ) && command="lilypond-build"
@@ -24,7 +14,6 @@ lilyrun() { \
 }
 
 case "$ext" in
-	# Try to keep these cases in alphabetical order.
 	[0-9]) preconv "$file" | refer -PS -e | groff -mandoc -T pdf > "$base".pdf ;;
 	c) cc "$file" -o "$base" && "$base" ;;
 	cpp) g++ "$file" -o "$base" && "$base" ;;
@@ -34,22 +23,13 @@ case "$ext" in
 	java) javac -d classes "$file" && java -cp classes "${1%.*}" ;;
 	ly) lilyrun "$file" ;;
 	m) octave "$file" ;;
-	md)	if  [ -x "$(command -v lowdown)" ]; then
-			lowdown --parse-no-intraemph "$file" -Tms | groff -mpdfmark -ms -kept > "$base".pdf
-		elif [ -x "$(command -v groffdown)" ]; then
-			groffdown -i "$file" | groff > "$base.pdf"
-		else
-			pandoc -t ms --highlight-style=kate -s -o "$base".pdf "$file"
-		fi ; ;;
+	md) lowdown -tterm "$file" >> /tmp/lowdown.script.txt ; st -e less -R /tmp/lowdown.script.txt ; rm -rf /tmp/lowdown.script.txt ;;
 	mom) preconv "$file" | refer -PS -e | groff -mom -kept -T pdf > "$base".pdf ;;
-	ms) preconv "$file" | refer -PS -e -p "$HOME/.local/share/groff/bib.txt" | groff -U -ms -kept -dpaper=letter -T pdf > "$base".pdf ;;
-	org) emacs "$file" --batch -u "$USER" -f org-latex-export-to-pdf ;;
+	ms) preconv "$file" | refer -PS -e -p "$HOME/.local/share/groff/library.txt" | groff -U -ms -kept -dpaper=letter -T pdf > "$base".pdf ;;
 	py) python "$file" ;;
-	[rR]md) Rscript -e "rmarkdown::render('$file', quiet=TRUE)" ;;
 	rs) cargo build ;;
 	sass) sassc -a "$file" "$base.css" ;;
 	scad) openscad -o "$base".stl "$file" ;;
 	sent) setsid -f sent "$file" 2>/dev/null ;;
-	tex) textype "$file" ;;
 	*) sed -n '/^#!/s/^#!//p; q' "$file" | xargs -r -I % "$file" ;;
 esac

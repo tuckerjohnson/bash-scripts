@@ -2,16 +2,8 @@
 I keep this bound to a hot-key in vim to work with all
 kinds of files. Loads of dependencies, check the source.
 
-## ffsample-get
-```
-ffsample-get [wav file]
-```
-uses ffprobe to approximate number of frames in a file. usually over-shoots estimate. 
-
-dependencies: `ffmpeg`
-
 ## lilypond-build
-Run inside the compiler script, this is used to process my 
+Run inside the compiler script, this is used to process my
 lilypond projects. It prevents me from having to use
 `\include` commands in my documents. Project directory should
 look like:
