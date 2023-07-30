@@ -1,19 +1,35 @@
 #!/bin/sh
 
 file=$(readlink -f "$1")
-dir=${file%/*}
+directory="${file%/*}"
 base="${file%.*}"
-ext="${file##*.}"
+extension="${file##*.}"
+baseName="${base##*/}"
+directoryName="${directory##*/}"
 
-cd "$dir" || exit 1
+cd "$directory" || exit 1
 
-lilyrun() { \
-	command="lilypond"
-	( head -n5 "$file" | grep -qi 'project' ) && command="lilypond-build"
-	$command "$file"
+lilypondPreview() { \
+	case "$directoryName" in
+		variables) cd .. ;;
+		eng-files) cd .. ;;
+		front-matter) cd .. ;;
+		manuscripts) cd .. ;;
+	esac
+	directoryName="${PWD##*/}"
+	cat variables/*.ly eng-files/*.ly front-matter/*.ly *.ly |
+		lilypond -dno-point-and-click --output=/tmp/"$directoryName"-compiler - &&
+			zathura /tmp/"$directoryName"-compiler.pdf &&
+				rm -rf /tmp/"$directoryName"-compiler.pdf
 }
 
-case "$ext" in
+lilypondCheck() { \
+	command="lilypond"
+	( head -n5 "$file" | grep -qi 'project' ) && command="lilypondPreview"
+	$command $1
+}
+
+case "$extension" in
 	[0-9]) preconv "$file" | refer -PS -e | groff -mandoc -T pdf > "$base".pdf ;;
 	c) cc "$file" -o "$base" && "$base" ;;
 	cpp) g++ "$file" -o "$base" && "$base" ;;
@@ -21,9 +37,10 @@ case "$ext" in
 	go) go run "$file" ;;
 	h) sudo make install ;;
 	java) javac -d classes "$file" && java -cp classes "${1%.*}" ;;
-	ly) lilyrun "$file" ;;
+	ly) lilypondCheck "$file" ;;
 	m) octave "$file" ;;
-	md) lowdown -tterm "$file" >> /tmp/lowdown.script.txt ; st -e less -R /tmp/lowdown.script.txt ; rm -rf /tmp/lowdown.script.txt ;;
+	md) lowdown -tterm "$file" >> /tmp/"$baseName"-compiler.txt &&
+		st -e less -R /tmp/"$baseName"-compiler.txt ; rm -rf /tmp/"$baseName"-compiler.txt ;;
 	mom) preconv "$file" | refer -PS -e | groff -mom -kept -T pdf > "$base".pdf ;;
 	ms) preconv "$file" | refer -PS -e -p "$HOME/.local/share/groff/library.txt" | groff -U -ms -kept -dpaper=letter -T pdf > "$base".pdf ;;
 	py) python "$file" ;;
