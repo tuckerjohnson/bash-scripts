@@ -1,0 +1,11 @@
+#!/bin/sh
+
+file=$(readlink -f "$1")
+base="${file%.*}"
+top="modules/top.ms"
+
+cd ..
+cat heads/bios.ms "$top" modules/bios.ms | preconv - | groff -U -ms -kept -dpaper=letter -T pdf > bios.pdf
+cat heads/low.ms "$top" modules/low.ms | preconv - | groff -U -ms -kept -dpaper=letter -T pdf > low.pdf
+cat heads/lop.ms "$top" modules/lop.ms | preconv - | groff -U -ms -kept -dpaper=letter -T pdf > lop.pdf
+cat heads/cv.ms "$top" $(grep -v '^#' lists/cv.txt) | preconv - | groff -U -ms -kept -dpaper=letter -T pdf > cv.pdf

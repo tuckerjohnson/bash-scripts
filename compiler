@@ -23,10 +23,15 @@ lilypondPreview() { \
 				rm -rf /tmp/"$directoryName"-compiler.pdf
 }
 
-lilypondCheck() { \
-	command="lilypond"
-	( head -n5 "$file" | grep -qi 'project' ) && command="lilypondPreview"
+check() { \
+	command=$2
+	( head -n1 "$file" | grep -qi 'project' ) && command="lilypondPreview"
+	( head -n1 "$file" | grep -qi 'module' ) && command="infoGroffMs"
 	$command $1
+}
+
+groffMs() { \
+	preconv $1 | refer -PS -e -p "$HOME/.local/share/groff/library.txt" | groff -U -ms -kept -dpaper=letter -T pdf > "$base".pdf
 }
 
 case "$extension" in
@@ -37,12 +42,12 @@ case "$extension" in
 	go) go run "$file" ;;
 	h) sudo make install ;;
 	java) javac -d classes "$file" && java -cp classes "${1%.*}" ;;
-	ly) lilypondCheck "$file" ;;
+	ly) check "$file" lilypond ;;
 	m) octave "$file" ;;
 	md) lowdown -tterm "$file" >> /tmp/"$baseName"-compiler.txt &&
 		st -e less -R /tmp/"$baseName"-compiler.txt ; rm -rf /tmp/"$baseName"-compiler.txt ;;
 	mom) preconv "$file" | refer -PS -e | groff -mom -kept -T pdf > "$base".pdf ;;
-	ms) preconv "$file" | refer -PS -e -p "$HOME/.local/share/groff/library.txt" | groff -U -ms -kept -dpaper=letter -T pdf > "$base".pdf ;;
+	ms) check "$file" groffMs ;;
 	py) python "$file" ;;
 	rs) cargo build ;;
 	sass) sassc -a "$file" "$base.css" ;;

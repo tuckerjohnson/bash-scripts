@@ -10,5 +10,5 @@ case "${PWD##*/}" in
 	manuscripts) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
 		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" -  ;;
 	*) cat variables/*.ly eng-files/*.ly front-matter/*.ly *.ly |
-		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" -  ;;
+		lilypond -dno-point-and-click --output=../"$(dirname "${PWD}")" -  ;;
 esac
