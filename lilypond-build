@@ -1,14 +1,16 @@
 #!/bin/sh
 
+gitInfo="shortHash = \"$(git show -s --format=%h)\"\nlongHash = \"$(git show -s --format=%H)\"\nsubject = \"$(git show -s --format=%s)\"\ncommitDate = \"$(git show -s --format=%cd)\""
+
 case "${PWD##*/}" in
-	variables) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
+	variables) {  cat ../variables/*.ly; echo -e $gitInfo; cat ../eng-files/*.ly ../front-matter/*.ly ../book.ly; } |
 		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" - ;;
-	eng-files) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
+	eng-files) {  cat ../variables/*.ly; echo -e $gitInfo; cat ../eng-files/*.ly ../front-matter/*.ly ../book.ly; } |
 		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" - ;;
-	front-matter) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
+	front-matter) {  cat ../variables/*.ly; echo -e $gitInfo; cat ../eng-files/*.ly ../front-matter/*.ly ../book.ly; } |
 		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" - ;;
-	manuscripts) cat ../variables/*.ly ../eng-files/*.ly ../front-matter/*.ly ../*.ly |
+	manuscripts) {  cat ../variables/*.ly; echo -e $gitInfo; cat ../eng-files/*.ly ../front-matter/*.ly ../book.ly; } |
 		lilypond -dno-point-and-click --output=../"$(basename "$(dirname "${PWD}")")" -  ;;
-	*) cat variables/*.ly eng-files/*.ly front-matter/*.ly *.ly |
+	*) { cat ./variables/*.ly; echo -e $gitInfo; cat ./eng-files/*.ly ./front-matter/*.ly ./book.ly; } |
 		lilypond -dno-point-and-click --output=../"$(dirname "${PWD}")" -  ;;
 esac

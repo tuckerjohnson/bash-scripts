@@ -16,8 +16,9 @@ lilypondPreview() { \
 		front-matter) cd .. ;;
 		manuscripts) cd .. ;;
 	esac
+    gitInfo="shortHash = \"$(git show -s --format=%h)\"\nlongHash = \"$(git show -s --format=%H)\"\nsubject = \"$(git show -s --format=%s)\"\ncommitDate = \"$(git show -s --format=%cd)\""
 	directoryName="${PWD##*/}"
-	cat variables/*.ly eng-files/*.ly front-matter/*.ly *.ly |
+	{ cat ./variables/*.ly; echo -e $gitInfo; cat ./eng-files/*.ly ./front-matter/*.ly ./book.ly; } |
 		lilypond -dno-point-and-click --output=/tmp/"$directoryName"-compiler - &&
 			zathura /tmp/"$directoryName"-compiler.pdf &&
 				rm -rf /tmp/"$directoryName"-compiler.pdf
