@@ -1,0 +1,7 @@
+#!/bin/sh
+
+file="${1}"
+base="${file%.*}"
+gitInfo="branchName = \"$(git branch --show-current)\"\nshortHash = \"$(git show -s --format=%h)\"\nlongHash = \"$(git show -s --format=%H)\"\nsubject = \"$(git show -s --format=%s)\"\ncommitDate = \"$(git show -s --format=%cd)\""
+
+sed "2i $gitInfo" $file | lilypond -dno-point-and-click --output="$base" -
